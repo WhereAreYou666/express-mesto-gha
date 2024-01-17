@@ -1,6 +1,6 @@
 const Card = require('../models/card');
 
-const { ERROR_INPUT, ERROR_FORBIDDEN, ERROR_SERVER} = require('../utils/constants');
+const { ERROR_INPUT, ERROR_NOT_FOUND, ERROR_SERVER} = require('../utils/constants');
 
 module.exports.getCards = (req, res) => {
   Card.find({})
@@ -29,7 +29,7 @@ module.exports.deleteCard = (req, res) => {
       if (card) {
         res.send({ data: card });
       } else {
-        res.status(ERROR_FORBIDDEN).send({ message: 'Карточка с таким id не найдена' });
+        res.status(ERROR_NOT_FOUND).send({ message: 'Карточка с таким id не найдена' });
       }
     })
     .catch((err) => {
@@ -51,7 +51,7 @@ module.exports.likeCard = (req, res) => {
       if (card) {
         res.send({ data: card });
       } else {
-        res.status(ERROR_FORBIDDEN).send({ message: 'Карточка с таким id не найдена' });
+        res.status(ERROR_NOT_FOUND).send({ message: 'Карточка с таким id не найдена' });
       }
     })
     .catch((err) => {
@@ -73,7 +73,7 @@ module.exports.dislikeCard = (req, res) => {
       if (card) {
         res.send({ data: card });
       } else {
-        res.status(ERROR_FORBIDDEN).send({ message: 'Карточка с таким id не найдена' });
+        res.status(ERROR_NOT_FOUND).send({ message: 'Карточка с таким id не найдена' });
       }
     })
     .catch((err) => {

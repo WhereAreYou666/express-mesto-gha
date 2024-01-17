@@ -1,9 +1,9 @@
 const ERROR_INPUT = 400;
-const ERROR_FORBIDDEN = 404;
+const ERROR_NOT_FOUND = 404;
 const ERROR_SERVER = 500;
 
 module.exports = {
   ERROR_INPUT,
-  ERROR_FORBIDDEN,
+  ERROR_NOT_FOUND,
   ERROR_SERVER,
 };
