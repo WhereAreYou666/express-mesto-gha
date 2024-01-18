@@ -71,5 +71,11 @@ module.exports.updateAvatar = (req, res) => {
         res.status(ERROR_NOT_FOUND).send({ message: 'Пользователь с таким id не найден' });
       }
     })
-    .catch(() => res.status(ERROR_SERVER).send({ message: 'На сервере произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(ERROR_INPUT).send({ message: 'Данные введены некорректно' });
+      } else {
+        res.status(ERROR_SERVER).send({ message: 'На сервере произошла ошибка' });
+      }
+    });
 };
