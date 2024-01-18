@@ -4,7 +4,7 @@
   "description": "[![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml) # Проект Mesto фронтенд + бэкенд",
   "main": "app.js",
   "scripts": {
-    "lint": "npx eslint .",
+    "lint": "eslint --fix --ext .js,.jsx .",
     "start": "node app.js",
     "dev": "nodemon --inspect -- app.js"
   },
