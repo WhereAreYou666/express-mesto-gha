@@ -1,32 +1,50 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { ERROR_NOT_FOUND } = require('./utils/constants');
+const helmet = require('helmet');
+const { errors } = require('celebrate');
+const { rateLimit } = require('express-rate-limit');
+const { login, createUser } = require('./controllers/users');
+const auth = require('./middlewares/auth');
+const handleError = require('./middlewares/handleError');
+const NotFoundError = require('./errors/NotFoundError');
+const { validateSignUp, validateSignIn } = require('./middlewares/validation');
 
 const { PORT = 3000 } = process.env;
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+});
 
 const app = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
+app.use(helmet());
+
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '65a78e911ea73971a4fa6e47',
-  };
+app.use(limiter);
 
-  next();
-});
+app.post('/signup', validateSignUp, createUser);
+
+app.post('/signin', validateSignIn, login);
+
+app.use(auth);
 
 app.use('/users', require('./routes/users'));
 
 app.use('/cards', require('./routes/cards'));
 
-app.use((req, res, next) => {
-  next(res.status(ERROR_NOT_FOUND).send({ message: 'Страница не существует' }))
-});
+app.use((req, res, next) => next(new NotFoundError('Страницы по данному URL не существует')));
+
+app.use(errors());
+app.use(handleError);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
