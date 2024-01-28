@@ -24,6 +24,18 @@ module.exports.getUser = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.getCurrentUser = (req, res, next) => {
+  const { _id } = req.user;
+  User.find({ _id })
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      res.send({ data: user[0] });
+    })
+    .catch(next);
+};
+
 module.exports.createUser = (req, res, next) => {
   const {
     name,
@@ -110,18 +122,6 @@ module.exports.login = (req, res, next) => {
       } else {
         throw new AuthorizationError('Неправильные почта или пароль');
       }
-    })
-    .catch(next);
-};
-
-module.exports.getCurrentUser = (req, res, next) => {
-  const { _id } = req.user;
-  User.find({ _id })
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Пользователь не найден');
-      }
-      res.send({ data: user[0] });
     })
     .catch(next);
 };
