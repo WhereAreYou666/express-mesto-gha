@@ -7,14 +7,14 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      minlength: [2, 'Минимальная длина поля "name" - 2'],
-      maxlength: [30, 'Максимальная длина поля "name" - 30'],
+      minlength: [2, 'Минимальная длина поля - 2'],
+      maxlength: [30, 'Максимальная длина поля - 30'],
       default: 'Жак-Ив Кусто',
     },
     about: {
       type: String,
-      minlength: [2, 'Минимальная длина поля "about" - 2'],
-      maxlength: [30, 'Максимальная длина поля "about" - 30'],
+      minlength: [2, 'Минимальная длина поля - 2'],
+      maxlength: [30, 'Максимальная длина поля - 30'],
       default: 'Исследователь',
     },
     avatar: {
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       unique: true,
-      required: [true, 'Поле "email" должно быть заполнено'],
+      required: [true, 'Поле должно быть заполнено'],
       validate: {
         validator: (v) => validator.isEmail(v),
         message: 'Некорректный формат электронной почты',
