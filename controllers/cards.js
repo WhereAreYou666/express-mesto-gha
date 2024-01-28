@@ -30,12 +30,11 @@ module.exports.deleteCard = (req, res, next) => {
     .then((card) => {
       if (!card) {
         next(new NotFoundError('Карточка с таким id не найдена'));
-      } else if (req.user._id === card.owner.toString()) {
-        Card.deleteOne(card)
-          .then(() => res.send({ data: card }));
-      } else {
-        next(new AuthNotFoundError('Не допустимо удаление карточки другого пользователя'));
+      } else if (req.user._id !== card.owner.toString()) {
+        return next(new AuthNotFoundError('Не допустимо удаление карточки другого пользователя'));
       }
+      return Card.deleteOne(card)
+        .then(() => res.send({ data: card }));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
